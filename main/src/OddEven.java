@@ -55,10 +55,10 @@ class OddEvenTask implements Runnable {
 }
 
 class Printer {
-    private volatile boolean isOdd;
+    private volatile boolean lock;
 
     public synchronized void printEven(int number) {
-        while (!isOdd) {
+        while (!lock) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -66,12 +66,12 @@ class Printer {
             }
         }
         System.out.println(Thread.currentThread().getName() + ":" + number);
-        isOdd = false;
+        lock = false;
         notify();
     }
 
     public synchronized void printOdd(int number) {
-        while (isOdd) {
+        while (lock) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -79,7 +79,7 @@ class Printer {
             }
         }
         System.out.println(Thread.currentThread().getName() + ":" + number);
-        isOdd = true;
+        lock = true;
         notify();
     }
 }
